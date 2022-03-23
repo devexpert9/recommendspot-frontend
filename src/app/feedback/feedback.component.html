@@ -1,0 +1,232 @@
+<div headerwebs *ngIf="!IsLoggedIn">
+  <!-- <ion-menu-button slot="start">
+    <img height="15px" src="assets/img/menu.png" />
+  </ion-menu-button> -->
+  <a href="javascript:void(0)" routerLink="/add-all-recommendation" logo
+    ><!--Recommendspot--><img
+      height="22px"
+      src="assets/img/logo-white.png"
+      alt=""
+  /></a>
+  <div ritHeader style="height: 66px">
+    <ul>
+      <!-- <li search-head class="dropdown-dots">
+			<a href="javascript:void(0)" (click)="hide()"><ion-icon name="search-outline"></ion-icon></a>
+			<ul class="list-post-fl" *ngIf="hideMe">
+			    <div class="search">
+			      <ion-searchbar placeholder="Search here..."></ion-searchbar>
+			    </div>
+			</ul>			
+			</li> -->
+      <!-- <li><a routerLink="/category" href="javascript:void(0)">Category</a></li> -->
+      <li>
+        <a routerLink="/add-all-recommendation" href="javascript:void(0)">
+          <ion-icon
+            name="add-circle-outline"
+            style="font-size: 2.73em"
+          ></ion-icon
+        ></a>
+      </li>
+      <li><a routerLink="/login" href="javascript:void(0)">Login</a></li>
+      <li><a routerLink="/signup" href="javascript:void(0)">Signup</a></li>
+
+      <!-- <li><a routerLink="/posts" href="javascript:void(0)">Recommendations</a></li> -->
+    </ul>
+  </div>
+</div>
+
+<div headerWeb *ngIf="IsLoggedIn">
+  <!-- <ion-menu-button slot="start">
+    <img height="15px" src="assets/img/menu.png" />
+  </ion-menu-button> -->
+  <a
+    href="javascript:void(0)"
+    logo
+    [routerLink]="['/tabs/home']"
+    routerLinkActive="router-link-active"
+    ><!--Recommendspot--><img
+      height="22px"
+      src="assets/img/logo-white.png"
+      alt=""
+  /></a>
+
+  <div ritHeader>
+    <ul>
+      <li>
+        <a
+          routerLink="/tabs/home"
+          href="javascript:void(0)"
+          (click)="gotToTop()"
+          >Home</a
+        >
+      </li>
+      <!-- routerLink="/category" -->
+      <li (click)="gotocat()"><a href="javascript:void(0)">Categories</a></li>
+      <li (click)="gotofollowing()">
+        <a routerLink="/tabs/following" href="javascript:void(0)">Following</a>
+      </li>
+      <li>
+        <a routerLink="/tabs/add-recommend" href="javascript:void(0)"
+          >Add Recommendation</a
+        >
+      </li>
+    </ul>
+
+    <!--ion-label style="display: none;"><span>Select Category</span></ion-label-->
+    <!--ion-select  style="color: #fff;font-size: 15px;font-weight: 500;    margin-top: 3px;" interface="alert" [(ngModel)]="cat" (ionChange)="catChange(type, 'web')">
+			<ion-select-option value="All"> All Categories </ion-select-option>
+			<ion-select-option value="{{cat._id}}" *ngFor="let cat of categories"> {{cat.name}} </ion-select-option>
+			
+		</ion-select-->
+
+    <a href="javascript:void(0)" routerLink="/tabs/notification" noti>
+      <ion-icon name="notifications-sharp"></ion-icon>
+      <ion-badge
+        *ngIf="noti_count != '0' && errors.indexOf(noti_count) == -1"
+        color="secondary"
+        ><span *ngIf="noti_count != '0'">{{ noti_count }}</span></ion-badge
+      >
+    </a>
+
+    <span proImg>
+      <img
+        routerLink="/tabs/profile"
+        *ngIf="errors.indexOf(user_image) == -1 && getimage(user_image) == true"
+        src="{{ user_image }}"
+      />
+      <img
+        routerLink="/tabs/profile"
+        *ngIf="
+          errors.indexOf(user_image) == -1 && getimage(user_image) == false
+        "
+        src="{{ IMAGES_URL + '/images/' + user_image }}"
+      />
+      <img
+        routerLink="/tabs/profile"
+        *ngIf="errors.indexOf(user_image) >= 0"
+        src="assets/img/default.png"
+      />
+
+      <p headerfixedheight routerLink="/tabs/profile">
+        <span class="username">{{ user_name }} </span
+        ><small>{{ user_email }}</small>
+      </p>
+      <div profileDropdown>
+        <ul>
+          <li>
+            <a
+              href="javascript:void(0)"
+              routerLink="/profile-setting/{{ user_id }}"
+              >Profile Settings</a
+            >
+          </li>
+          <li>
+            <a href="javascript:void(0)" routerLink="/tabs/saved"
+              >Saved Recommedations</a
+            >
+          </li>
+          <li>
+            <a
+              href="javascript:void(0)"
+              routerLink="/see-friends-recomendations"
+              >See Friends Recommedations</a
+            >
+          </li>
+          <li (click)="logout()"><a href="javascript:void(0)">Logout</a></li>
+        </ul>
+      </div>
+    </span>
+  </div>
+</div>
+
+<ion-header>
+  <!-- <ion-toolbar color="secondary">   
+		<ion-title class="ion-text-left"><img src="assets/img/logo-white.png" alt="" ></ion-title>
+		<ion-buttons  routerLink="/signup" slot="end">Sign Up
+		</ion-buttons>
+	</ion-toolbar> -->
+
+  <ion-toolbar color="secondary">
+    <ion-menu-button slot="start">
+      <img height="15px" src="assets/img/menu.png" />
+    </ion-menu-button>
+    <ion-title class="ion-text-center logoMb">
+      <img src="assets/img/logo-white.png" alt="" />
+    </ion-title>
+    <!--ion-buttons addbtn slot="end" routerLink="/add-all-recommendation"
+      ><ion-icon name="add-outline"></ion-icon
+    ></ion-buttons-->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-no-padding" #content [scrollEvents]="true">
+  <div class="flexAdmin">
+    <app-sidebarnew></app-sidebarnew>
+    <div class="flexAdmin__con">
+      <div localrecommend>
+        <div container>
+          <form [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
+            <div form-group>
+              <label>Name</label>
+              <ion-item lines="none">
+                <ion-icon name="person-circle-outline"></ion-icon>
+                <ion-input
+                  placeholder="Name"
+                  formControlName="name"
+                ></ion-input>
+              </ion-item>
+              <div error *ngIf="submitted && f.name.errors">
+                <span error *ngIf="f.name.errors.required"
+                  >Name is required</span
+                >
+              </div>
+            </div>
+
+            <div form-group>
+              <label>Email</label>
+              <ion-item lines="none">
+                <ion-input
+                  placeholder="Email"
+                  (input)="validateEmail($event.target.value)"
+                  formControlName="email"
+                ></ion-input>
+              </ion-item>
+
+              <div error *ngIf="submitted">
+                <span *ngIf="!isEmailValidate">
+                  Email requried and must be a valid email address
+                </span>
+              </div>
+            </div>
+
+            <div form-group>
+              <label>Message</label>
+              <ion-item lines="none">
+                <ion-textarea
+                  formControlName="message"
+                  rows="3"
+                  placeholder="Add Message"
+                ></ion-textarea>
+              </ion-item>
+              <span error *ngIf="submitted && f.message.errors">
+                <span error *ngIf="f.message.errors.required"
+                  >Message is required</span
+                >
+              </span>
+            </div>
+            <ion-button
+              color="secondary"
+              expand="full"
+              shape="round"
+              type="submit"
+              >Send Feedback</ion-button
+            >
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+<div footerWeb>
+  <p>© 2021 Recommendspot. All rights reserved.</p>
+</div>

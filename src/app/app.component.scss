@@ -1,0 +1,40 @@
+ion-menu {
+  ion-list {
+    padding: 0px;
+    &[menutop] {
+      padding: 0px;
+      ion-item {
+        border-radius: 0px;
+        min-width: 100%;
+        ion-avatar {
+          height: 70px;
+          width: 70px;
+          border: 2px solid var(--ion-color-white);
+        }
+        ion-label {
+          margin-left: 20px;
+        }
+      }
+    }
+    ion-menu-toggle {
+      ion-item {
+        border-bottom: 1px solid var(--ion-color-ltgrey);
+        padding: 5px 0px;
+        font-size: 15px;
+        min-width: 100%;
+        border-radius: 0px;
+        ion-icon {
+          color: var(--ion-color-secondary);
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+  [noticount] {
+    background: #add8e6;
+    font-size: 11px;
+    padding: 4px;
+    border-radius: 100px;
+    float: right;
+  }
+}

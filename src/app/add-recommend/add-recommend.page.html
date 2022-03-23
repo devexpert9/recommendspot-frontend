@@ -1,0 +1,582 @@
+<div headerWeb>
+  <!-- <ion-menu-button slot="start">
+    <img height="15px" src="assets/img/menu.png" />
+  </ion-menu-button> -->
+  <a
+    href="javascript:void(0)"
+    logo
+    [routerLink]="['/tabs/home']"
+    routerLinkActive="router-link-active"
+    ><!--Recommendspot--><img
+      height="22px"
+      src="assets/img/logo-white.png"
+      alt=""
+  /></a>
+
+  <div ritHeader>
+    <ul (click)="stopPlayer()">
+      <li>
+        <a
+          routerLink="/tabs/home"
+          href="javascript:void(0)"
+          (click)="gotToTop()"
+          >Home</a
+        >
+      </li>
+      <!-- routerLink="/category" -->
+      <li (click)="gotocat()"><a href="javascript:void(0)">Categories</a></li>
+      <li (click)="gotofollowing()">
+        <a routerLink="/tabs/following" href="javascript:void(0)">Following</a>
+      </li>
+      <li>
+        <!-- <a routerLink="/tabs/add-recommend" href="javascript:void(0)"
+          >Add Recommendation</a
+        > -->
+      </li>
+    </ul>
+
+    <!--ion-label style="display: none;"><span>Select Category</span></ion-label-->
+    <!--ion-select  style="color: #fff;font-size: 15px;font-weight: 500;    margin-top: 3px;" interface="alert" [(ngModel)]="cat" (ionChange)="catChange(type, 'web')">
+			<ion-select-option value="All"> All Categories </ion-select-option>
+			<ion-select-option value="{{cat._id}}" *ngFor="let cat of categories"> {{cat.name}} </ion-select-option>
+			
+		</ion-select-->
+
+    <a href="javascript:void(0)" routerLink="/tabs/notification" noti>
+      <ion-icon name="notifications-sharp"></ion-icon>
+      <ion-badge
+        *ngIf="noti_count != '0'  && errors.indexOf(noti_count) == -1"
+        color="secondary"
+        ><span *ngIf="noti_count != '0'">{{noti_count}}</span></ion-badge
+      >
+    </a>
+
+    <span proImg>
+      <img
+        routerLink="/tabs/profile"
+        *ngIf="errors.indexOf(user_image) == -1 && getimage(user_image) == true"
+        src="{{user_image}}"
+      />
+      <img
+        routerLink="/tabs/profile"
+        *ngIf="errors.indexOf(user_image) == -1 && getimage(user_image) == false"
+        src="{{IMAGES_URL + '/images/' + user_image}}"
+      />
+      <img
+        routerLink="/tabs/profile"
+        *ngIf="errors.indexOf(user_image) >= 0"
+        src="assets/img/default.png"
+      />
+
+      <p headerfixedheight routerLink="/tabs/profile">
+        <span class="username">{{user_name}} </span
+        ><small>{{user_email}}</small>
+      </p>
+      <div profileDropdown>
+        <ul>
+          <li>
+            <a
+              href="javascript:void(0)"
+              routerLink="/profile-setting/{{user_id}}"
+              >Profile Settings</a
+            >
+          </li>
+          <li>
+            <a href="javascript:void(0)" routerLink="/tabs/saved"
+              >Saved Recommedations</a
+            >
+          </li>
+          <li>
+            <a
+              href="javascript:void(0)"
+              routerLink="/see-friends-recomendations"
+              >See Friends Recommedations</a
+            >
+          </li>
+          <li (click)="logout()"><a href="javascript:void(0)">Logout</a></li>
+        </ul>
+      </div>
+    </span>
+  </div>
+</div>
+
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-menu-button slot="start">
+      <img height="15px" src="assets/img/menu.png" />
+    </ion-menu-button>
+    <ion-title class="ion-text-center logoMb"
+      ><img src="assets/img/logo-white.png" alt=""
+    /></ion-title>
+    <!--ion-buttons addbtn slot="end" routerLink="/tabs/add-recommend"
+      ><ion-icon name="add-outline"></ion-icon
+    ></ion-buttons-->
+  </ion-toolbar>
+</ion-header>
+
+<!-- <ion-content class="ion-padding" #content [scrollEvents]="true">
+  <div addrecommend>
+    <div container>
+      <div recommendinner>
+        <div heading>
+          <h2>Add Recommendation</h2>
+          <p>
+            If you want to add local and global recommendations, then please
+            feel free to click the buttons below
+          </p>
+        </div>
+        <div btnbottom>
+          <ion-button
+            color="secondary"
+            expand="full"
+            shape="round"
+            type="submit"
+            routerLink="/addlocalrecommendation"
+            >Add Local Recommendation</ion-button
+          >
+          <ion-button
+            color="secondary"
+            expand="full"
+            shape="round"
+            type="submit"
+            fill="outline"
+            routerLink="/add-recommendation"
+            >Add Global Recommendation</ion-button
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content> -->
+<ion-content class="ion-no-padding" #content [scrollEvents]="true">
+  <div class="flexAdmin">
+    <app-sidebarnew></app-sidebarnew>
+    <div class="flexAdmin__con">
+      <div localrecommend>
+        <div container>
+          <form [formGroup]="authForm">
+            <div form-group>
+              <label>What are you Recommending?</label>
+              <ion-item lines="none">
+                <!-- <ion-icon name="person-circle-outline"></ion-icon> -->
+                <span disbabled>I Recommend &nbsp; </span>
+                <ion-input formControlName="title"></ion-input>
+              </ion-item>
+              <span
+                error
+                *ngIf="
+              errors.indexOf(authForm.value.title) >= 0 && is_submit == true
+            "
+                >Please enter what are you Recommending</span
+              >
+            </div>
+            <ion-row> </ion-row>
+            <div form-group>
+              <label>Why are you Recommending?</label>
+              <ion-item lines="none">
+                <ion-textarea
+                  formControlName="description"
+                  rows="3"
+                ></ion-textarea>
+              </ion-item>
+
+              <span
+                error
+                *ngIf="
+              errors.indexOf(authForm?.value?.description) >= 0 &&
+              is_submit == true
+            "
+                >Please enter why are you recommended</span
+              >
+            </div>
+
+            <div form-group>
+              <label>Category</label>
+              <ion-item lines="none">
+                <ion-label style="max-width: 0">
+                  <!-- <ion-icon name="layers-outline"></ion-icon> -->
+                  <span style="display: none">Category</span>
+                </ion-label>
+                <ion-select
+                  [interfaceOptions]="customAlertOptions"
+                  interface="alert"
+                  placeholder="Select Category"
+                  formControlName="category"
+                >
+                  <ion-select-option
+                    *ngFor="let doc of categories; let i = index"
+                    value="{{ doc._id }}"
+                    >{{ doc.name }}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+
+              <span
+                error
+                *ngIf="
+              errors.indexOf(authForm.value.category) >= 0 && is_submit == true
+            "
+                >Please choose category</span
+              >
+            </div>
+            <div form-group>
+              <label>Tags</label>
+              <ion-item lines="none">
+                <tag-input
+                  formControlName="tags"
+                  [editable]="true"
+                  [identifyBy]="'id'"
+                  (keydown)="onKeydown($event)"
+                  [displayBy]="'name'"
+                  [placeholder]="''"
+                  [secondaryPlaceholder]="'Enter Tags'"
+                >
+                </tag-input>
+              </ion-item>
+            </div>
+
+            <div class="accordion" id="accordionExample">
+              <div class="card">
+                <div class="card-header" id="headingOne">
+                  <h2 class="mb-0">
+                    <button
+                      class="btn btn-link collapsed"
+                      type="button"
+                      data-toggle="collapse"
+                      data-target="#collapseFive"
+                      aria-expanded="true"
+                      aria-controls="collapseFive"
+                    >
+                      Add Recomendation Location
+                      <span iconaccordion>
+                        <ion-icon addicon name="add-circle-outline"></ion-icon>
+                        <ion-icon
+                          minusicon
+                          name="remove-circle-outline"
+                        ></ion-icon>
+                      </span>
+                    </button>
+                  </h2>
+                </div>
+
+                <div
+                  id="collapseFive"
+                  class="collapse"
+                  aria-labelledby="headingOne"
+                  data-parent="#accordionExample"
+                >
+                  <div class="card-body">
+                    <div form-group>
+                      <label></label>
+                      <ion-item lines="none">
+                        <ion-label style="min-width: 30px">
+                          <ion-icon name="location-outline"></ion-icon>
+                        </ion-label>
+                        <!-- <ion-input  placeholder="Enter Location"></ion-input> -->
+                        <input
+                          formControlName="location"
+                          class="autocomplete"
+                          ngx-google-places-autocomplete
+                          #placesRef="ngx-places"
+                          (onAddressChange)="handleAddressChange($event)"
+                        />
+                      </ion-item>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-header" id="headingOne">
+                  <h2 class="mb-0">
+                    <button
+                      class="btn btn-link collapsed"
+                      type="button"
+                      data-toggle="collapse"
+                      data-target="#collapseOne"
+                      aria-expanded="true"
+                      aria-controls="collapseOne"
+                    >
+                      Add Image
+                      <span iconaccordion>
+                        <ion-icon addicon name="add-circle-outline"></ion-icon>
+                        <ion-icon
+                          minusicon
+                          name="remove-circle-outline"
+                        ></ion-icon>
+                      </span>
+                    </button>
+                  </h2>
+                </div>
+
+                <div
+                  id="collapseOne"
+                  class="collapse"
+                  aria-labelledby="headingOne"
+                  data-parent="#accordionExample"
+                >
+                  <div class="card-body">
+                    <div form-group uploadimg>
+                      <div add-recc>
+                        <label for="resume"
+                          ><ion-icon name="cloud-upload-outline"></ion-icon
+                          ><span>Upload Image Here</span></label
+                        >
+                        <input
+                          type="file"
+                          name="resume"
+                          id="resume"
+                          style="display: none"
+                          (change)="uploadImages($event)"
+                        />
+
+                        <img
+                          *ngIf="errors.indexOf(image_url) == -1"
+                          [src]="sanitizer.bypassSecurityTrustUrl(image_url)"
+                        />
+                        <img
+                          *ngIf="isFillAddReccStatus"
+                          src="{{IMAGES_URL + '/images/' + filledData.image}}"
+                        />
+                      </div>
+                      <!-- <span error *ngIf="errors.indexOf(image_file) >= 0 && is_submit == true">Please select image</span> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="card">
+            <div class="card-header" id="headingTwo">
+              <h2 class="mb-0">
+                <button
+                  class="btn btn-link collapsed"
+                  type="button"
+                  data-toggle="collapse"
+                  data-target="#collapseTwo"
+                  aria-expanded="false"
+                  aria-controls="collapseTwo"
+                >
+                  Sub Category
+                </button>
+              </h2>
+            </div>
+            <div
+              id="collapseTwo"
+              class="collapse"
+              aria-labelledby="headingTwo"
+              data-parent="#accordionExample"
+            >
+              <div class="card-body">
+                <div form-group *ngIf="subcategories.length >= 0">
+                  <label>Sub Category</label>
+                  <ion-item lines="none">
+                    <ion-label>
+                      <ion-icon name="layers-outline"></ion-icon>
+                      <span style="display: none">Sub Category</span>
+                    </ion-label>
+                    <ion-select
+                      interface="alert"
+                      placeholder="Select"
+                      formControlName="subcategory"
+                    >
+                      <ion-select-option
+                        value="{{ doc._id }}"
+                        *ngFor="let doc of subcategories; let i = index"
+                      >
+                        {{ doc.name }}
+                      </ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                  <span
+                    error
+                    *ngIf="
+                      errors.indexOf(authForm.value.subcategory) >= 0 &&
+                      is_submit == true &&
+                      (subcategories?.length > 0 || counter == 1)
+                    "
+                    >Please choose sub category</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div> -->
+              <div class="card">
+                <div class="card-header" id="headingThree">
+                  <h2 class="mb-0">
+                    <button
+                      class="btn btn-link collapsed"
+                      type="button"
+                      data-toggle="collapse"
+                      data-target="#collapseThree"
+                      aria-expanded="false"
+                      aria-controls="collapseThree"
+                    >
+                      Add Web Link/Youtube Link
+                      <span iconaccordion>
+                        <ion-icon addicon name="add-circle-outline"></ion-icon>
+                        <ion-icon
+                          minusicon
+                          name="remove-circle-outline"
+                        ></ion-icon>
+                      </span>
+                    </button>
+                  </h2>
+                </div>
+                <div
+                  id="collapseThree"
+                  class="collapse"
+                  aria-labelledby="headingThree"
+                  data-parent="#accordionExample"
+                >
+                  <div class="card-body">
+                    <div form-group uploadimg>
+                      <ion-item lines="none">
+                        <ion-textarea
+                          placeholder="Enter Website Link"
+                          (ionChange)="checklink(authForm.value.web_link)"
+                          formControlName="web_link"
+                        ></ion-textarea>
+                      </ion-item>
+                      <span
+                        error
+                        *ngIf="
+                      errors.indexOf(authForm.value.web_link) >= 0 &&
+                      is_submit == true
+                    "
+                        >Please enter web link/youtube link</span
+                      >
+                      <span
+                        error
+                        *ngIf="
+                      errors.indexOf(authForm.value.web_link) == -1 &&
+                      !expression.test(authForm.value.web_link) &&
+                      is_submit == true
+                    "
+                        >Please enter valid web link (i.e.
+                        http://www.example.com, https://www.example.com,
+                        www.example.com, example.com)</span
+                      >
+
+                      <div
+                        class="linkcontent"
+                        *ngIf="authForm.value.web_link != '' && opencontent == true"
+                      >
+                        <ion-icon
+                          name="close-circle-outline"
+                          class="linkcontentclose"
+                          (click)="closeLinkContent()"
+                        ></ion-icon>
+                        <ion-row>
+                          <ion-col
+                            size="4"
+                            size-md="1"
+                            *ngIf="link_content?.image != ''"
+                          >
+                            <img src="{{ link_content?.data?.image }}" />
+                          </ion-col>
+                          <ion-col
+                            size="{{ link_content?.title != '' ? 8 : 12 }}"
+                          >
+                            <p
+                              style="padding-right: 25px; font-weight: 600"
+                              *ngIf="link_content?.data?.title != ''"
+                            >
+                              {{ link_content?.data?.title | slice: 0:35 }}
+                            </p>
+                            <p
+                              *ngIf="
+                            errors.indexOf(link_content?.data) >= 0 &&
+                            is_linkdata == true
+                          "
+                            >
+                              Lorem Ipsum is simply dummy text of the industry.
+                            </p>
+                            <p *ngIf="link_content?.data?.title != ''">
+                              {{ link_content?.data?.description | slice: 0:70
+                              }}<span
+                                *ngIf="
+                              errors.indexOf(link_content?.data?.description) ==
+                              -1
+                            "
+                                >...</span
+                              >
+                            </p>
+                            <p
+                              *ngIf="
+                            errors.indexOf(link_content?.data) >= 0 &&
+                            is_linkdata == true
+                          "
+                            >
+                              Lorem Ipsum is simply dummy text of the industry.
+                            </p>
+                          </ion-col>
+                        </ion-row>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-header" id="headingOne">
+                  <h2 class="mb-0">
+                    <button
+                      class="btn btn-link collapsed"
+                      type="button"
+                      data-toggle="collapse"
+                      data-target="#collapsefour"
+                      aria-expanded="true"
+                      aria-controls="collapsefour"
+                    >
+                      Add Recomendation Contact Info
+                      <span iconaccordion>
+                        <ion-icon addicon name="add-circle-outline"></ion-icon>
+                        <ion-icon
+                          minusicon
+                          name="remove-circle-outline"
+                        ></ion-icon>
+                      </span>
+                    </button>
+                  </h2>
+                </div>
+
+                <div
+                  id="collapsefour"
+                  class="collapse"
+                  aria-labelledby="headingOne"
+                  data-parent="#accordionExample"
+                >
+                  <div class="card-body">
+                    <div form-group>
+                      <ion-item lines="none">
+                        <ion-label>
+                          <ion-icon name="call-outline"></ion-icon>
+                        </ion-label>
+
+                        <ion-input
+                          placeholder="Recommendations Contact Info"
+                          formControlName="recc_contact"
+                        ></ion-input>
+                      </ion-item>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ion-button
+              color="secondary"
+              expand="full"
+              shape="round"
+              type="submit"
+              class="mt-3"
+              (click)="add_local_recc()"
+              >Add Recommendation</ion-button
+            >
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+<div footerWeb>
+  <p>© 2021 Recommendspot. All rights reserved.</p>
+</div>

@@ -1,0 +1,86 @@
+[headerwebs] {
+    display: flex;
+    align-items: center;
+       padding: 0 30px 0 0;
+    background: var(--ion-color-secondary);
+    [logo] {
+      color: #fff;
+      font-size: 25px;
+      text-decoration: none;
+      font-weight: 700;
+    }
+    [ritHeader] {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0 0px 0 0;
+        display: inline-flex;
+        align-items: center;
+        li {
+          margin: 0;
+          display: inline-block;
+          a {
+            color: #fff;
+            font-size: 14px;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0 15px;
+          }
+          &[search-head] {
+            a {
+              background: rgba(255, 255, 255, 0.24);
+              display: inline-flex;
+              padding: 6px;
+              width: 30px;
+              height: 30px;
+              align-items: center;
+              justify-content: center;
+              border-radius: 50%;
+              ion-icon {
+                font-size: 20px;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    
+  @media only screen and (max-width: 991px){
+    &[sideBar]
+    {
+      display: none !important;
+    }
+  }
+}
+
+[sideBar]
+{
+  height: 66px;
+  position: fixed;
+  overflow-y: auto;
+  height: 100%;
+  align-items: baseline !important;
+  padding: 0 0 !important;
+  min-width: 290px;
+  background-color: #fff !important;
+  flex-direction: column;
+  ion-item{
+    border-bottom: 1px solid var(--ion-color-ltgrey);
+    padding: 5px 0px;
+    font-size: 15px;
+    min-height: 60px;
+    min-width: 100%;
+    background-color: #fff !important;
+    border-radius: 0px;
+    ion-icon{
+      color: var(--ion-color-secondary);
+      margin-right: 10px;
+    }
+  }
+
+}

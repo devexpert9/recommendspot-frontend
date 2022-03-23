@@ -1,0 +1,131 @@
+<ion-header>
+  <ion-toolbar>
+  
+    <!--ion-title>signup</ion-title-->
+  </ion-toolbar>
+</ion-header>
+<ion-content  class="ion-padding">
+<div loginform>
+<div logo  class="ion-text-center">
+ <img src="assets/img/logo.png"/>
+  <h2>Create a new account</h2>
+</div>
+<form [formGroup]="authForm" (keyup.enter)="register()">
+<div form-group>
+<label>Full Name</label>
+<ion-item lines="none">
+<ion-label>
+<ion-icon name="person-outline"></ion-icon>
+</ion-label>
+<ion-input type="text"  placeholder="Enter Name"  formControlName="name"></ion-input>
+</ion-item>
+
+ <span error *ngIf="errors.indexOf(authForm.value.name) >= 0 && is_submit == true">Please enter your name</span>
+
+ 
+   <span error *ngIf="errors.indexOf(authForm.value.name) == -1 && is_submit == true && !reg_exp_letters.test(authForm.value.name)">Please enter valid name should starts with alphabet</span>
+</div>
+<div form-group>
+<label>Email</label>
+<ion-item lines="none">
+<ion-label>
+<ion-icon name="mail-outline"></ion-icon>
+</ion-label>
+<ion-input clearOnEdit="false" type="email"  placeholder="Enter Email"   formControlName="email"></ion-input>
+</ion-item>
+
+<span error *ngIf="errors.indexOf(authForm.value.email) >= 0 && is_submit == true">Please enter your email</span>
+<span error *ngIf="errors.indexOf(authForm.value.email) == -1 && is_submit == true && !reg_exp.test(authForm.value.email.toLowerCase())">Please enter valid email</span>
+</div>
+<!-- <div form-group>
+<label>Phone Number</label>
+<ion-item lines="none">
+<ion-label>
+<ion-icon name="call-outline"></ion-icon>
+</ion-label>
+<ion-input clearOnEdit="false" type="text"  placeholder="Enter Phone Number" formControlName="contact"></ion-input>
+</ion-item>
+<span error *ngIf="errors.indexOf(authForm.value.contact) >= 0 && is_submit == true">Please enter your phone number</span>
+<span error *ngIf="!reg_exp_digits.test(authForm.value.contact) && errors.indexOf(authForm.value.contact) == -1 && is_submit == true">Phone number should consist min. 6 digits and max. 10 digits</span>
+</div> -->
+
+<!-- <div form-group>
+<label>Location</label>
+<ion-item lines="none">
+<ion-label>
+<ion-icon name="location-outline"></ion-icon>
+</ion-label>
+<ion-input clearOnEdit="false" type="text"  placeholder="Enter Your Location" formControlName="location"></ion-input>
+</ion-item>
+<span error *ngIf="errors.indexOf(authForm.value.location) >= 0 && is_submit == true">Please enter your location</span>
+
+</div> -->
+
+<!-- <div form-group>
+<label>Bio</label>
+<ion-item lines="none">
+<ion-label>
+<ion-icon name="person-outline"></ion-icon>
+</ion-label>
+<ion-input clearOnEdit="false" type="text"  placeholder="Enter Your Bio" formControlName="bio"></ion-input>
+</ion-item>
+<span error *ngIf="errors.indexOf(authForm.value.bio) >= 0 && is_submit == true">Please enter your bio</span>
+</div> -->
+<div form-group>
+<label>Password</label>
+<ion-item lines="none">
+<ion-label>
+<ion-icon name="lock-closed-outline"></ion-icon>
+</ion-label>
+<ion-input clearOnEdit="false" type="password"  placeholder="Enter Password"formControlName="password"></ion-input>
+
+</ion-item>
+
+<span error *ngIf="errors.indexOf(authForm.value.password) >= 0 && is_submit == true">Please enter your password</span>  
+<span error *ngIf="errors.indexOf(authForm.value.password) == -1 && is_submit == true && authForm.value.password.length < 6 && withoutspace.test(authForm.value.password)">Please enter atleast 6 digits password</span>
+<span error *ngIf="!withoutspace.test(authForm.value.password) && errors.indexOf(authForm.value.password) == -1 && is_submit == true">Please enter valid password containing no space</span>
+</div>
+<!-- <div form-group>
+<label>Confirm Password</label>
+<ion-item lines="none">
+<ion-label>
+<ion-icon name="lock-closed-outline"></ion-icon>
+</ion-label>
+<ion-input clearOnEdit="false" type="password"  placeholder="Enter Confirm Password"  formControlName="confirm_password"></ion-input>
+
+</ion-item>
+
+<span error *ngIf="errors.indexOf(authForm.value.confirm_password) >= 0 && is_submit == true">Please enter your confirm password</span>  
+
+<span error *ngIf="errors.indexOf(authForm.value.confirm_password) == -1 && is_submit == true && authForm.value.password!=authForm.value.confirm_password && withoutspace.test(authForm.value.confirm_password)">Please enter correct password</span>
+<span error *ngIf="!withoutspace.test(authForm.value.confirm_password) && errors.indexOf(authForm.value.confirm_password) == -1 && is_submit == true">Please enter valid confirm password containing no space</span>
+</div> -->
+<div login-btn>
+<ion-button type="submit" expand="full" color="secondary"  shape="round" (click)="register()">
+Sign Up
+</ion-button>
+</div>
+</form>
+<div btn-signup class="ion-text-center">
+<p>Already have an account ? <a routerLink="/login" href="javascript:void(0)">Login Here</a></p>
+
+</div>
+<div btn-facebook class="ion-text-center">
+<ion-button expand="full" color="primary"  shape="round" (click)="facebookLogin()">
+<span fb-icon><img src="assets/img/fb.png"/></span> Login With Facebook
+</ion-button>
+</div>
+<div btn-google class="ion-text-center">
+<ion-button expand="full" shape="round" (click)="googleLogin()">
+<span fb-icon><ion-icon name="logo-google"></ion-icon></span> Login With Google
+</ion-button>
+</div>
+</div>
+
+</ion-content>
+
+<div footerWeb>
+	<p>© 2021 Recommendspot. All rights reserved.</p>
+</div>
+
+

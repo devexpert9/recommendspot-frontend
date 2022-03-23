@@ -1,0 +1,593 @@
+<div headerWeb>
+  <!-- <ion-menu-button slot="start">
+    <img height="15px" src="assets/img/menu.png" />
+  </ion-menu-button> -->
+  <a href="javascript:void(0)" routerLink="/tabs/home" logo
+    ><!--Recommendspot--><img
+      height="22px"
+      src="assets/img/logo-white.png"
+      alt=""
+  /></a>
+  <div ritHeader>
+    <ul (click)="stopPlayer()">
+      <li><a routerLink="/tabs/home" href="javascript:void(0)">Home</a></li>
+      <li>
+        <a routerLink="/category" href="javascript:void(0)">Categories</a>
+      </li>
+      <li (click)="gotofollowing()">
+        <a routerLink="/tabs/following" href="javascript:void(0)">Following</a>
+      </li>
+      <li>
+        <a routerLink="/tabs/add-recommend" href="javascript:void(0)"
+          >Add Recommendation</a
+        >
+      </li>
+    </ul>
+    <a href="javascript:void(0)" routerLink="/tabs/notification" noti
+      ><ion-icon name="notifications-sharp"></ion-icon
+      ><ion-badge
+        *ngIf="noti_count != '0'  && errors.indexOf(noti_count) == -1"
+        color="secondary"
+        ><span *ngIf="noti_count != '0'">{{noti_count}}</span></ion-badge
+      ></a
+    >
+    <span proImg>
+      <img
+        routerLink="/tabs/profile"
+        *ngIf="errors.indexOf(user_image) == -1 && getimage(user_image) == true"
+        src="{{user_image}}"
+        (click)="gotToTop()"
+      />
+      <img
+        routerLink="/tabs/profile"
+        *ngIf="errors.indexOf(user_image) == -1 && getimage(user_image) == false"
+        src="{{IMAGES_URL + '/images/' + user_image}}"
+        (click)="gotToTop()"
+      />
+      <img
+        routerLink="/tabs/profile"
+        *ngIf="errors.indexOf(user_image) >= 0"
+        src="assets/img/default.png"
+        (click)="gotToTop()"
+      />
+
+      <p headerfixedheight routerLink="/tabs/profile" (click)="gotToTop()">
+        <span class="username">{{user_name}} </span
+        ><small>{{user_email}}</small>
+      </p>
+      <div profileDropdown>
+        <ul>
+          <li>
+            <a
+              href="javascript:void(0)"
+              routerLink="/profile-setting/{{user_id}}"
+              >Profile Settings
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)" routerLink="/tabs/saved"
+              >Saved Recommedations</a
+            >
+          </li>
+          <li>
+            <a
+              href="javascript:void(0)"
+              routerLink="/see-friends-recomendations"
+              >See Friends Recommedations</a
+            >
+          </li>
+
+          <li (click)="logout()"><a href="javascript:void(0)">Logout</a></li>
+        </ul>
+      </div>
+    </span>
+  </div>
+</div>
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-menu-button slot="start">
+      <img height="15px" src="assets/img/menu.png" />
+    </ion-menu-button>
+    <ion-title class="ion-text-center logoMb">
+      <img src="assets/img/logo-white.png" alt="" />
+    </ion-title>
+    <!--ion-buttons (click)="goto_profile_setting()" mar-10 slot="end">
+	  <ion-icon name="settings-outline"></ion-icon>
+	</ion-buttons-->
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-no-padding" #content [scrollEvents]="true">
+  <div class="flexAdmin">
+    <app-sidebarnew></app-sidebarnew>
+    <div class="flexAdmin__con">
+      <div container>
+        <div profileinfo>
+          <!-- <div profileimg [style.backgroundImage]="'url(' + bgImage + ')'">
+</div> -->
+          <!--div userimg>
+<img src="assets/img/profile_user.jpg">
+<h2>John Smith</h2>
+</div-->
+          <div class="folow-sec">
+            <ion-row class="ion-align-items-center">
+              <ion-col size="3">
+                <div userimg>
+                  <img
+                    *ngIf="errors.indexOf(profile?.image) == -1 && getimage(profile?.image) == true"
+                    src="{{profile?.image}}"
+                  />
+                  <img
+                    *ngIf="errors.indexOf(profile?.image) == -1 && getimage(profile?.image) == false"
+                    src="{{IMAGES_URL + '/images/' + profile?.image}}"
+                  />
+
+                  <!-- <img *ngIf="errors.indexOf(profile?.image) == -1 && profile?.medium == 'simple'" src="{{IMAGES_URL + '/images/' + profile?.image}}">
+			<img *ngIf="errors.indexOf(profile?.image) == -1 && profile?.medium != 'simple'" src="{{profile?.image}}"> -->
+                  <img
+                    *ngIf="errors.indexOf(profile?.image) >= 0"
+                    src="assets/img/default.png"
+                  />
+                  <h2>{{profile?.name}}</h2>
+                </div>
+              </ion-col>
+              <ion-col size="3">
+                <div class="folow-mn">
+                  <ion-icon
+                    class="ion-hide-sm-down"
+                    name="document-text-outline"
+                  ></ion-icon>
+                  <h3><span>{{data?.post?.length}}</span><br />Posts</h3>
+                </div>
+              </ion-col>
+              <ion-col size="3">
+                <div
+                  class="folow-mn"
+                  (click)="gotoFollowersFollowings('follower')"
+                  style="cursor: pointer"
+                >
+                  <ion-icon
+                    class="ion-hide-sm-down"
+                    name="people-outline"
+                  ></ion-icon>
+                  <h3><span>{{profile?.follower}}</span><br />Followers</h3>
+                </div>
+              </ion-col>
+              <ion-col size="3">
+                <div
+                  class="folow-mn"
+                  (click)="gotoFollowersFollowings('following')"
+                  style="cursor: pointer"
+                >
+                  <ion-icon
+                    class="ion-hide-sm-down"
+                    name="person-add-outline"
+                  ></ion-icon>
+                  <h3><span>{{profile?.following}}</span><br />Following</h3>
+                </div>
+              </ion-col>
+              <!-- <ion-col size="12" class="ion-hide-md-up" style="cursor: poniter;">
+		  <ion-button shape="round" size="full" fill="outline" color="secondary" routerLink="/profile-setting/{{user_id}}">
+		     Edit Profile
+		  </ion-button>
+		</ion-col> -->
+            </ion-row>
+
+            <div class="profileDetails">
+              <p *ngIf="errors.indexOf(profile?.bio) == -1">
+                <ion-icon name="clipboard-outline"></ion-icon> {{profile?.bio}}
+              </p>
+              <p
+                *ngIf="errors.indexOf(profile?.location) == -1 || errors.indexOf(profile?.website) == -1"
+              >
+                <ion-icon
+                  name="location-outline"
+                  *ngIf="errors.indexOf(profile?.location) == -1"
+                ></ion-icon
+                >{{profile?.location}}
+                <ion-icon
+                  class="lineeot"
+                  name="link-outline"
+                  *ngIf="errors.indexOf(profile?.website) == -1"
+                >
+                </ion-icon
+                >{{profile?.website}}
+              </p>
+            </div>
+            <div class="ml ion-hide-md-up">
+              <ion-button
+                shape="round"
+                size="full"
+                fill="outline"
+                color="secondary"
+                routerLink="/profile-setting/{{user_id}}"
+              >
+                Edit Profile
+              </ion-button>
+            </div>
+          </div>
+        </div>
+
+        <div class="home-sec">
+          <ion-segment>
+            <h3>Added Recommendations</h3>
+            <!-- <ion-segment
+        [(ngModel)]="profiletab"
+        (ionChange)="onSegmentChange($event)"
+      > -->
+            <!-- <ion-segment-button value="Global"> Global </ion-segment-button> -->
+          </ion-segment>
+
+          <ng-container *ngIf="profiletab == 'Local'">
+            <ion-row>
+              <ion-col
+                size="12"
+                size-md="6"
+                *ngFor="let doc of data?.post; let i = index;"
+              >
+                <ion-card localfeed>
+                  <ion-grid class="ion-no-padding">
+                    <ion-row>
+                      <!--ion-col
+                    size-lg="4"
+                    size-sm="4"
+                    size="4"
+                    *ngIf="errors.indexOf(doc.image) == -1"
+                  >
+
+                  </ion-col-->
+
+                      <ion-col
+                        [attr.size-lg]="errors.indexOf(doc.image) == -1 ? 12 : 12"
+                        size-sm="12"
+                        size="12"
+                      >
+                        <div postmain>
+                          <ion-item lines="none" class="ion-no-padding">
+                            <ion-avatar
+                              (click)="viewUser(doc)"
+                              style="cursor: pointer"
+                            >
+                              <img
+                                *ngIf="errors.indexOf(doc.user_image) == -1 && getimage(doc.user_image) == true"
+                                src="{{doc.user_image}}"
+                              />
+                              <img
+                                *ngIf="errors.indexOf(doc.user_image) == -1 && getimage(doc.user_image) == false"
+                                src="{{IMAGES_URL + '/images/' + doc.user_image}}"
+                              />
+                              <img
+                                *ngIf="errors.indexOf(doc.user_image) >= 0"
+                                src="assets/img/default.png"
+                              />
+                            </ion-avatar>
+                            <!-- <ion-label>
+		   							<h2>{{doc.user_name}}</h2> -->
+                            <ion-label>
+                              <h2>{{doc.user_name}}</h2>
+                              <span
+                                (click)="viewPost(doc)"
+                                class="mobshow desshow"
+                                *ngIf="doc.category != ''"
+                              >
+                                <span class="str">{{doc.category}} </span>
+                              </span>
+                              <p local-location>
+                                <ion-icon
+                                  name="location-outline"
+                                  *ngIf="doc?.location!=''"
+                                ></ion-icon>
+                                {{doc.location}}
+                              </p>
+                              <p slot="end" localdate>
+                                {{doc.created_at | dateAgo}}
+                              </p>
+                            </ion-label>
+                            <!-- <p slot="end" localdate>{{doc.created_at  | dateAgo}}</p> -->
+                            <!-- <p local-location><ion-icon name="location-outline"></ion-icon> {{doc.location}}</p>
+	   								<p localdate>{{doc.created_at  | dateAgo}}</p> -->
+                            <!-- </ion-label> -->
+                          </ion-item>
+
+                          <div postcontent>
+                            <!-- routerLink="/localrecommenddetail" -->
+                            <h3 (click)="viewPost(doc)" style="cursor: pointer">
+                              {{doc.title}}
+                            </h3>
+                            <p (click)="viewPost(doc)">{{doc.description}}</p>
+                            <div class="tagsBox">
+                              <small *ngIf="doc?.tags?.length>0">TAGS:</small>
+                              <small
+                                *ngFor="let tag of doc?.tags; last as isLast"
+                                >{{tag?.name}}{{isLast?'':', '}}
+                              </small>
+                            </div>
+                            <div
+                              *ngIf="errors.indexOf(doc?.web_link) == -1"
+                              style="cursor: pointer"
+                            >
+                              <div
+                                class="linkcontent contfull ion-no-padding"
+                                *ngIf="doc?.web_link_content?.data != null"
+                              >
+                                <ion-grid class="ion-no-padding">
+                                  <ion-row>
+                                    <ion-col
+                                      size="12"
+                                      size-md="12"
+                                      *ngIf="doc?.web_link_content?.data.image != ''"
+                                    >
+                                      <img
+                                        *ngIf="youtube_parser(doc?.web_link) == false"
+                                        src="{{doc?.web_link_content?.data.image}}"
+                                      />
+                                      <object
+                                        *ngIf="i == 0"
+                                        id="iframeone"
+                                        width="100%"
+                                        height="315"
+                                        frameborder="0"
+                                        style="
+                                          display: none;
+                                          margin-bottom: 5px;
+                                        "
+                                      ></object>
+                                      <object
+                                        *ngIf="i > 0"
+                                        id="iframe{{i}}"
+                                        width="100%"
+                                        height="315"
+                                        frameborder="0"
+                                        style="
+                                          display: none;
+                                          margin-bottom: 5px;
+                                        "
+                                      ></object>
+                                    </ion-col>
+                                    <ion-col
+                                      size="{{doc?.web_link_content?.data.title != '' ? 12 : 12}}"
+                                      style="padding: 0px 15px 0px 15px"
+                                    >
+                                      <div
+                                        class="link-cnt"
+                                        [ngClass]="{'youtube-link-cnt': youtube_parser(doc?.web_link) != false}"
+                                      >
+                                        <div
+                                          class="imgPLay"
+                                          *ngIf="!play_video || i != index"
+                                        >
+                                          <ion-icon
+                                            name="play-circle-outline"
+                                            *ngIf="youtube_parser(doc?.web_link) != false"
+                                            (click)="playYoutube(doc?.web_link, i)"
+                                          ></ion-icon>
+                                          <img
+                                            src="{{doc?.web_link_content?.data.image}}"
+                                            *ngIf="youtube_parser(doc?.web_link) != false"
+                                          />
+                                        </div>
+                                        <div
+                                          [ngClass]="{'indiv': youtube_parser(doc?.web_link) != false}"
+                                          (click)="openLinkPreview(doc?.web_link_content.data.link)"
+                                        >
+                                          <p
+                                            style="margin: 4px 0"
+                                            *ngIf="doc?.web_link_content?.data.title != ''"
+                                          >
+                                            <b
+                                              >{{doc?.web_link_content?.data.title}}</b
+                                            >
+                                          </p>
+                                          <p
+                                            style="margin: 4px 0"
+                                            *ngIf="doc?.web_link_content?.data.title == ''"
+                                          >
+                                            Lorem Ipsum is simply dummy text of
+                                            the industry.
+                                          </p>
+                                          <p
+                                            style="margin: 4px 0"
+                                            *ngIf="doc?.web_link_content?.data.title != ''"
+                                          >
+                                            {{doc?.web_link_content?.data.description
+                                            | slice:0:50}}
+                                          </p>
+                                          <p
+                                            style="margin: 4px 0"
+                                            *ngIf="doc?.web_link_content?.data.title == ''"
+                                          >
+                                            Lorem Ipsum is simply dummy text of
+                                            the industry.
+                                          </p>
+                                          <!-- <div weblink-sec> -->
+                                          <div class="weblinkbox">
+                                            <ion-icon
+                                              class="heart-icon"
+                                              name="link-outline"
+                                            ></ion-icon>
+                                            <span class="weblink">
+                                              <a
+                                                (click)="openLink(doc?.web_link)"
+                                                >{{doc?.link}}</a
+                                              >
+                                            </span>
+                                          </div>
+                                          <!-- </div> -->
+                                        </div>
+                                      </div>
+                                    </ion-col>
+                                  </ion-row>
+                                </ion-grid>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="post-img" *ngIf="doc?.image!=''">
+                          <img
+                            src="{{IMAGES_URL + '/images/' + doc.image}}"
+                            (click)="openImagePopup(doc.image)"
+                          />
+                          <!--span>{{doc.category}}</span-->
+                        </div>
+                      </ion-col>
+
+                      <ion-col size="12" postmain>
+                        <div class="postlikecomt">
+                          <ion-row style="width: 100%">
+                            <ion-col size="6">
+                              <span
+                                class="padding-8 commentstitle"
+                                *ngIf="doc.likes.length > 0"
+                                style="float: left"
+                                ><ion-icon name="thumbs-up"></ion-icon>
+                                {{doc.likes.length}}
+                              </span>
+                            </ion-col>
+
+                            <ion-col size="6" class="ion-text-right">
+                              <span
+                                style="cursor: pointer"
+                                class="padding-8 commentstitle"
+                                *ngIf="doc.comment_count > 0"
+                                (click)="viewComments(doc)"
+                                >{{doc.comment_count}}
+                                <span *ngIf="doc.comment_count == 1"
+                                  >Comment</span
+                                ><span *ngIf="doc.comment_count > 1"
+                                  >Comments</span
+                                >
+                              </span>
+                            </ion-col>
+                          </ion-row>
+                        </div>
+
+                        <div
+                          class="savelater"
+                          *ngIf="doc.fav == '0'"
+                          (click)="addRemoveReccomdation(doc, '1', i)"
+                        >
+                          <ion-icon
+                            class="heart-fav"
+                            name="bookmark-outline"
+                          ></ion-icon>
+                          Save For Later
+                        </div>
+
+                        <div
+                          class="savelater"
+                          *ngIf="doc.fav == '1'"
+                          (click)="addRemoveReccomdation(doc, '0', i)"
+                        >
+                          <ion-icon
+                            style="cursor: pointer"
+                            class="heart-fav fav-save"
+                            name="bookmark"
+                          ></ion-icon>
+                          <b>Save For Later</b>
+                        </div>
+
+                        <div iconssocial class="iconfx">
+                          <div post-fav-icon>
+                            <!-- doc.likes, doc.dislikes, i, doc -->
+                            <ion-buttons
+                              class="socl-btn"
+                              (click)="like(doc.likes, i)"
+                            >
+                              <ion-icon
+                                name="{{isLikedPost(doc.likes)}}"
+                                [ngClass]="{'liked': isLikedPost(doc.likes) == 'thumbs-up'}"
+                              ></ion-icon
+                              ><!--  {{item.likes.length}}  -->Like
+                            </ion-buttons>
+                          </div>
+
+                          <div post-fav-icon>
+                            <ion-buttons
+                              class="socl-btn"
+                              (click)="viewComments(doc)"
+                            >
+                              <ion-icon name="chatbubble-outline"></ion-icon>
+                              Comment
+                            </ion-buttons>
+                          </div>
+
+                          <div post-fav-icon>
+                            <ion-buttons
+                              class="socl-btn"
+                              (click)="openUpdateShare(i)"
+                            >
+                              <ion-icon name="arrow-redo-outline"></ion-icon>
+                              Share
+                            </ion-buttons>
+
+                            <ul
+                              class="list-post-edit sharedrop displaynonediv"
+                              id="doc{{i}}"
+                              [class.displaydiv]="selectedItemmShare == i"
+                            >
+                              <li>
+                                <a
+                                  (click)="viewPostSocial(doc, 'http://www.facebook.com/share.php?u=https://recommendspot.com/#/post-details/')"
+                                  ><ion-icon name="logo-facebook"></ion-icon>
+                                  Facebook</a
+                                >
+                              </li>
+                              <li>
+                                <a
+                                  (click)="viewPostSocial(doc, 'https://twitter.com/share?url=https://recommendspot.com/#/post-details/&amp;text=aa&amp;hashtags=YOUR_HASHTAGS')"
+                                  ><ion-icon name="logo-twitter"></ion-icon>
+                                  Twitter</a
+                                >
+                              </li>
+                              <li>
+                                <a
+                                  (click)="viewPostSocial(doc, 'https://web.whatsapp.com/send?text=https://recommendspot.com/#/post-details/')"
+                                  ><ion-icon name="logo-whatsapp"></ion-icon>
+                                  Whatsapp</a
+                                >
+                              </li>
+                              <li>
+                                <a
+                                  (click)="viewPostSocial(doc, 'https://plus.google.com/share?url=https://recommendspot.com/#/post-details/')"
+                                  ><ion-icon name="logo-google"></ion-icon>
+                                  Google</a
+                                >
+                              </li>
+                              <li>
+                                <a
+                                  (click)="viewPostSocial(doc, 'http://www.linkedin.com/shareArticle?mini=true&amp;url=https://recommendspot.com/#/post-details/')"
+                                  ><ion-icon name="logo-linkedin"></ion-icon>
+                                  Linkdin</a
+                                >
+                              </li>
+                            </ul>
+                            <!-- <ul class="list-post-edit sharedrop " *ngIf="hideMe2">
+									<li> <a><ion-icon name="logo-facebook"></ion-icon> Facebook</a> </li>
+									<li> <a><ion-icon name="logo-twitter"></ion-icon> Twitter</a> </li>
+									<li> <a><ion-icon name="logo-whatsapp"></ion-icon> Whatsapp</a> </li>
+									<li> <a><ion-icon name="logo-google"></ion-icon> Google</a> </li>
+									<li> <a ><ion-icon name="logo-linkedin"></ion-icon> Linkdin</a> </li>
+								</ul> -->
+                          </div>
+                        </div>
+                      </ion-col>
+                    </ion-row>
+                  </ion-grid>
+                </ion-card>
+              </ion-col>
+            </ion-row>
+          </ng-container>
+
+          <div
+            class="no-record"
+            *ngIf="data?.post?.length == 0 && is_response == true"
+          >
+            No recommendations yet.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+<div footerWeb>
+  <p>© 2021 Recommendspot. All rights reserved.</p>
+</div>
